@@ -5,22 +5,19 @@ import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { ArrowRight, Zap, Network, TrendingUp, Users, Briefcase, CheckCircle2, Moon, Sun } from 'lucide-react';
+import { useTheme } from 'next-themes';
 import { useEffect, useState } from 'react';
 
 export default function Home() {
-  const [isDark, setIsDark] = useState(false);
+  const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     setMounted(true);
-    const isDarkMode = document.documentElement.classList.contains('dark');
-    setIsDark(isDarkMode);
   }, []);
 
   const toggleTheme = () => {
-    const html = document.documentElement;
-    html.classList.toggle('dark');
-    setIsDark(!isDark);
+    setTheme(theme === 'dark' ? 'light' : 'dark');
   };
 
   return (
@@ -56,7 +53,7 @@ export default function Home() {
                 className="p-2 rounded-lg hover:bg-accent/10 transition"
                 aria-label="Toggle theme"
               >
-                {isDark ? (
+                {theme === 'dark' ? (
                   <Sun className="w-5 h-5 text-accent" />
                 ) : (
                   <Moon className="w-5 h-5 text-primary" />
@@ -479,7 +476,7 @@ export default function Home() {
               Get Started Free
               <ArrowRight className="w-4 h-4 ml-2" />
             </Button>
-            <Button size="lg" variant="outline" className="rounded-full px-10 h-13 border-primary-foreground text-primary-foreground hover:bg-primary-foreground/10 text-base font-semibold">
+            <Button size="lg" variant="outline" className="rounded-full px-10 h-13 border-accent text-accent hover:bg-accent hover:text-accent-foreground text-base font-semibold">
               Watch Demo
             </Button>
           </div>

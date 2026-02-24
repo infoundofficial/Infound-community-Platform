@@ -95,24 +95,66 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Stats Section */}
-      <section className="py-16 px-4 md:px-6 bg-primary/5 border-y border-border">
-        <div className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8">
-          <div className="text-center">
-            <div className="text-3xl md:text-4xl font-bold text-primary mb-2">10K+</div>
-            <p className="text-sm text-foreground/60">Active Founders</p>
+      {/* Upcoming Events Section */}
+      <section className="py-20 px-4 md:px-6 bg-primary/5 border-y border-border">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-bold mb-4">Upcoming Events</h2>
+            <p className="text-lg text-foreground/60 mb-6">Join us at our next gathering.</p>
+            <Link href="#" className="inline-flex items-center gap-2 text-accent hover:text-accent/80 transition font-semibold">
+              View All Events
+              <ArrowRight className="w-4 h-4" />
+            </Link>
           </div>
-          <div className="text-center">
-            <div className="text-3xl md:text-4xl font-bold text-primary mb-2">2.5B+</div>
-            <p className="text-sm text-foreground/60">Capital Deployed</p>
-          </div>
-          <div className="text-center">
-            <div className="text-3xl md:text-4xl font-bold text-primary mb-2">450+</div>
-            <p className="text-sm text-foreground/60">Successful Exits</p>
-          </div>
-          <div className="text-center">
-            <div className="text-3xl md:text-4xl font-bold text-primary mb-2">98%</div>
-            <p className="text-sm text-foreground/60">Success Rate</p>
+          <div className="grid md:grid-cols-3 gap-8">
+            <Card className="p-8 hover:shadow-lg transition-shadow border-l-4 border-accent">
+              <div className="flex items-start justify-between mb-4">
+                <div>
+                  <p className="text-sm text-accent font-semibold">March 15, 2024</p>
+                  <h3 className="text-2xl font-bold mt-2">Founder Pitch Night</h3>
+                </div>
+              </div>
+              <p className="text-foreground/60 mb-4">
+                Connect with 50+ investors in a casual networking setting. Pitch your startup or discover the next big opportunity.
+              </p>
+              <div className="flex items-center gap-2 text-sm text-foreground/50 mb-6">
+                <Briefcase className="w-4 h-4" />
+                <span>San Francisco, CA</span>
+              </div>
+              <Button className="w-full rounded-lg">Register Now</Button>
+            </Card>
+            <Card className="p-8 hover:shadow-lg transition-shadow border-l-4 border-accent">
+              <div className="flex items-start justify-between mb-4">
+                <div>
+                  <p className="text-sm text-accent font-semibold">March 22, 2024</p>
+                  <h3 className="text-2xl font-bold mt-2">Investor Workshop</h3>
+                </div>
+              </div>
+              <p className="text-foreground/60 mb-4">
+                Learn advanced investment strategies and diligence techniques from seasoned investors. Limited to 30 participants.
+              </p>
+              <div className="flex items-center gap-2 text-sm text-foreground/50 mb-6">
+                <Briefcase className="w-4 h-4" />
+                <span>New York, NY</span>
+              </div>
+              <Button className="w-full rounded-lg">Register Now</Button>
+            </Card>
+            <Card className="p-8 hover:shadow-lg transition-shadow border-l-4 border-accent">
+              <div className="flex items-start justify-between mb-4">
+                <div>
+                  <p className="text-sm text-accent font-semibold">April 5, 2024</p>
+                  <h3 className="text-2xl font-bold mt-2">Networking Summit</h3>
+                </div>
+              </div>
+              <p className="text-foreground/60 mb-4">
+                Our biggest event of the year. Two days of keynotes, panels, and networking with 500+ founders and investors.
+              </p>
+              <div className="flex items-center gap-2 text-sm text-foreground/50 mb-6">
+                <Briefcase className="w-4 h-4" />
+                <span>Los Angeles, CA</span>
+              </div>
+              <Button className="w-full rounded-lg">Register Now</Button>
+            </Card>
           </div>
         </div>
       </section>

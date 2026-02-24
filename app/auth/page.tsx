@@ -31,7 +31,7 @@ export default function AuthPage() {
     const password = formData.get('password') as string;
 
     try {
-      const { error } = await supabase.auth.signInWithPassword({
+      const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password,
       });
@@ -39,8 +39,15 @@ export default function AuthPage() {
       if (error) {
         setError(error.message);
       } else {
-        setSuccess('Signed in successfully!');
-        router.push('/');
+        // Fetch user profile to get role
+        const { data: profile } = await supabase.from('users').select('role').eq('id', data.user.id).single();
+
+        if (profile) {
+          router.push(profile.role === 'admin' ? '/admin' : '/dashboard');
+        } else {
+          // Fallback to dashboard if no profile found
+          router.push('/dashboard');
+        }
       }
     } catch (err) {
       setError('An unexpected error occurred');

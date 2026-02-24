@@ -9,10 +9,86 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ArrowLeft, Eye, EyeOff } from 'lucide-react';
+import { supabase } from '@/lib/supabase';
+import { useRouter } from 'next/navigation';
 
 export default function AuthPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
+  const router = useRouter();
+
+  const handleSignIn = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setLoading(true);
+    setError('');
+    setSuccess('');
+
+    const formData = new FormData(e.currentTarget);
+    const email = formData.get('email') as string;
+    const password = formData.get('password') as string;
+
+    try {
+      const { error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+
+      if (error) {
+        setError(error.message);
+      } else {
+        setSuccess('Signed in successfully!');
+        router.push('/');
+      }
+    } catch (err) {
+      setError('An unexpected error occurred');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleSignUp = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setLoading(true);
+    setError('');
+    setSuccess('');
+
+    const formData = new FormData(e.currentTarget);
+    const name = formData.get('name') as string;
+    const email = formData.get('email') as string;
+    const password = formData.get('password') as string;
+    const confirmPassword = formData.get('confirmPassword') as string;
+
+    if (password !== confirmPassword) {
+      setError('Passwords do not match');
+      setLoading(false);
+      return;
+    }
+
+    try {
+      const { error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          data: {
+            full_name: name,
+          },
+        },
+      });
+
+      if (error) {
+        setError(error.message);
+      } else {
+        setSuccess('Check your email for the confirmation link!');
+      }
+    } catch (err) {
+      setError('An unexpected error occurred');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-background flex items-center justify-center p-4">
@@ -45,6 +121,18 @@ export default function AuthPage() {
               <TabsTrigger value="signup">Sign Up</TabsTrigger>
             </TabsList>
 
+            {/* Error/Success Messages */}
+            {error && (
+              <div className="mb-4 p-3 bg-destructive/10 border border-destructive/20 rounded-lg text-destructive text-sm">
+                {error}
+              </div>
+            )}
+            {success && (
+              <div className="mb-4 p-3 bg-accent/10 border border-accent/20 rounded-lg text-accent text-sm">
+                {success}
+              </div>
+            )}
+
             {/* Sign In Tab */}
             <TabsContent value="signin" className="space-y-6">
               <div>
@@ -52,11 +140,12 @@ export default function AuthPage() {
                 <p className="text-foreground/60">Sign in to your account to continue</p>
               </div>
 
-              <form className="space-y-4">
+              <form onSubmit={handleSignIn} className="space-y-4">
                 <div className="space-y-2">
                   <Label htmlFor="signin-email">Email</Label>
                   <Input
                     id="signin-email"
+                    name="email"
                     type="email"
                     placeholder="Enter your email"
                     required
@@ -68,6 +157,7 @@ export default function AuthPage() {
                   <div className="relative">
                     <Input
                       id="signin-password"
+                      name="password"
                       type={showPassword ? 'text' : 'password'}
                       placeholder="Enter your password"
                       required
@@ -92,8 +182,8 @@ export default function AuthPage() {
                   </Link>
                 </div>
 
-                <Button type="submit" className="w-full rounded-lg">
-                  Sign In
+                <Button type="submit" className="w-full rounded-lg" disabled={loading}>
+                  {loading ? 'Signing In...' : 'Sign In'}
                 </Button>
               </form>
 
@@ -116,11 +206,12 @@ export default function AuthPage() {
                 <p className="text-foreground/60">Join the InFound community</p>
               </div>
 
-              <form className="space-y-4">
+              <form onSubmit={handleSignUp} className="space-y-4">
                 <div className="space-y-2">
                   <Label htmlFor="signup-name">Full Name</Label>
                   <Input
                     id="signup-name"
+                    name="name"
                     type="text"
                     placeholder="Enter your full name"
                     required
@@ -131,6 +222,7 @@ export default function AuthPage() {
                   <Label htmlFor="signup-email">Email</Label>
                   <Input
                     id="signup-email"
+                    name="email"
                     type="email"
                     placeholder="Enter your email"
                     required
@@ -142,6 +234,7 @@ export default function AuthPage() {
                   <div className="relative">
                     <Input
                       id="signup-password"
+                      name="password"
                       type={showPassword ? 'text' : 'password'}
                       placeholder="Create a password"
                       required
@@ -165,6 +258,7 @@ export default function AuthPage() {
                   <div className="relative">
                     <Input
                       id="signup-confirm-password"
+                      name="confirmPassword"
                       type={showConfirmPassword ? 'text' : 'password'}
                       placeholder="Confirm your password"
                       required
@@ -183,8 +277,8 @@ export default function AuthPage() {
                   </div>
                 </div>
 
-                <Button type="submit" className="w-full rounded-lg">
-                  Create Account
+                <Button type="submit" className="w-full rounded-lg" disabled={loading}>
+                  {loading ? 'Creating Account...' : 'Create Account'}
                 </Button>
               </form>
 

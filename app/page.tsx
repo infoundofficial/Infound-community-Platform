@@ -1,21 +1,42 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { ArrowRight, Zap, Network, TrendingUp, Users, Briefcase, CheckCircle2 } from 'lucide-react';
+import { ArrowRight, Zap, Network, TrendingUp, Users, Briefcase, CheckCircle2, Moon, Sun } from 'lucide-react';
+import { useEffect, useState } from 'react';
 
 export default function Home() {
+  const [isDark, setIsDark] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+    const isDarkMode = document.documentElement.classList.contains('dark');
+    setIsDark(isDarkMode);
+  }, []);
+
+  const toggleTheme = () => {
+    const html = document.documentElement;
+    html.classList.toggle('dark');
+    setIsDark(!isDark);
+  };
+
   return (
     <main className="w-full">
       {/* Navigation */}
       <nav className="fixed top-0 w-full bg-background/80 backdrop-blur-md border-b border-border z-50">
         <div className="max-w-7xl mx-auto px-4 md:px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-              <span className="text-primary-foreground font-bold text-sm">IF</span>
-            </div>
-            <span className="font-semibold text-lg">InFound</span>
+            <Image 
+              src="/logo.png" 
+              alt="InFound Community" 
+              width={40} 
+              height={40}
+              className="w-10 h-10"
+            />
+            <span className="font-semibold text-lg hidden sm:inline">InFound</span>
           </div>
           <div className="hidden md:flex items-center gap-8">
             <Link href="#features" className="text-sm text-foreground/70 hover:text-foreground transition">
@@ -28,7 +49,22 @@ export default function Home() {
               Community
             </Link>
           </div>
-          <Button className="rounded-full">Get Started</Button>
+          <div className="flex items-center gap-3">
+            {mounted && (
+              <button
+                onClick={toggleTheme}
+                className="p-2 rounded-lg hover:bg-accent/10 transition"
+                aria-label="Toggle theme"
+              >
+                {isDark ? (
+                  <Sun className="w-5 h-5 text-accent" />
+                ) : (
+                  <Moon className="w-5 h-5 text-primary" />
+                )}
+              </button>
+            )}
+            <Button className="rounded-full">Get Started</Button>
+          </div>
         </div>
       </nav>
 
@@ -276,9 +312,13 @@ export default function Home() {
           <div className="grid md:grid-cols-4 gap-8 mb-12">
             <div>
               <div className="flex items-center gap-2 mb-4">
-                <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-                  <span className="text-primary-foreground font-bold text-sm">IF</span>
-                </div>
+                <Image 
+                  src="/logo.png" 
+                  alt="InFound Community" 
+                  width={32} 
+                  height={32}
+                  className="w-8 h-8"
+                />
                 <span className="font-semibold">InFound</span>
               </div>
               <p className="text-sm text-foreground/60">

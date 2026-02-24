@@ -69,28 +69,58 @@ export default function Home() {
       </nav>
 
       {/* Hero Section */}
-      <section className="pt-32 pb-20 px-4 md:px-6 bg-gradient-to-b from-background to-background/50">
-        <div className="max-w-4xl mx-auto text-center">
-          <div className="inline-block px-4 py-1.5 bg-accent/10 border border-accent/30 rounded-full text-sm text-accent mb-6">
-            <span className="flex items-center gap-2">
-              <Zap className="w-4 h-4" />
-              The Future of Founder Investing
-            </span>
-          </div>
-          <h1 className="text-5xl md:text-6xl font-bold text-balance mb-6 text-foreground">
-            Bridge the Gap Between Founders and Investors
-          </h1>
-          <p className="text-lg md:text-xl text-foreground/60 text-balance mb-8 max-w-2xl mx-auto">
-            InFound community—the founder-led platform designed to connect early-stage startups with seasoned investors. Build relationships, raise capital, and grow together.
-          </p>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Button size="lg" className="rounded-full px-8 h-12">
-              Start Investing
-              <ArrowRight className="w-4 h-4 ml-2" />
-            </Button>
-            <Button size="lg" variant="outline" className="rounded-full px-8 h-12">
-              List Your Startup
-            </Button>
+      <section className="pt-40 pb-24 px-4 md:px-6">
+        <div className="max-w-6xl mx-auto">
+          <div className="grid md:grid-cols-2 gap-12 items-center">
+            <div>
+              <div className="inline-block px-4 py-1.5 bg-accent/10 border border-accent/30 rounded-full text-sm text-accent mb-8">
+                <span className="flex items-center gap-2">
+                  <Zap className="w-4 h-4" />
+                  The Future of Founder Investing
+                </span>
+              </div>
+              <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-6 text-foreground leading-tight">
+                Bridge the Gap <span className="text-accent">Between Founders</span> and Investors
+              </h1>
+              <p className="text-lg md:text-xl text-foreground/60 mb-8 leading-relaxed">
+                InFound community—the founder-led platform designed to connect early-stage startups with seasoned investors. Build relationships, raise capital, and grow together.
+              </p>
+              <div className="flex flex-col sm:flex-row items-start gap-4">
+                <Button size="lg" className="rounded-full px-8 h-12 text-base font-semibold">
+                  Start Investing
+                  <ArrowRight className="w-4 h-4 ml-2" />
+                </Button>
+                <Button size="lg" variant="outline" className="rounded-full px-8 h-12 text-base font-semibold">
+                  List Your Startup
+                </Button>
+              </div>
+              <div className="flex gap-8 mt-12 pt-8 border-t border-border">
+                <div>
+                  <p className="text-3xl font-bold text-accent">10K+</p>
+                  <p className="text-sm text-foreground/60">Active Members</p>
+                </div>
+                <div>
+                  <p className="text-3xl font-bold text-accent">$2.5B</p>
+                  <p className="text-sm text-foreground/60">Capital Connected</p>
+                </div>
+                <div>
+                  <p className="text-3xl font-bold text-accent">450+</p>
+                  <p className="text-sm text-foreground/60">Successful Exits</p>
+                </div>
+              </div>
+            </div>
+            <div className="relative">
+              <div className="bg-gradient-to-br from-primary to-primary/80 rounded-3xl p-12 aspect-square flex items-center justify-center overflow-hidden">
+                <div className="absolute inset-0 opacity-10">
+                  <div className="absolute top-0 right-0 w-96 h-96 bg-accent rounded-full mix-blend-multiply filter blur-3xl"></div>
+                  <div className="absolute bottom-0 left-0 w-96 h-96 bg-accent rounded-full mix-blend-multiply filter blur-3xl"></div>
+                </div>
+                <div className="relative z-10 text-center">
+                  <Users className="w-24 h-24 text-accent/40 mx-auto mb-4" />
+                  <p className="text-accent/60 text-lg">Investor-Founder Network</p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -162,37 +192,49 @@ export default function Home() {
       {/* How It Works */}
       <section id="how-it-works" className="py-20 px-4 md:px-6">
         <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
+          <div className="text-center mb-20">
             <h2 className="text-4xl md:text-5xl font-bold mb-4">How It Works</h2>
             <p className="text-lg text-foreground/60 max-w-2xl mx-auto">
               Simple, transparent process to connect founders with the right investors
             </p>
           </div>
-          <div className="grid md:grid-cols-3 gap-8">
-            <Card className="p-8 hover:shadow-lg transition-shadow">
-              <div className="w-12 h-12 bg-accent/10 rounded-lg flex items-center justify-center mb-6">
-                <Users className="w-6 h-6 text-accent" />
+          <div className="grid md:grid-cols-3 gap-8 relative">
+            {/* Connecting lines for desktop */}
+            <div className="hidden md:block absolute top-24 left-0 right-0 h-1 bg-gradient-to-r from-accent/20 via-accent/40 to-accent/20 -z-10"></div>
+            
+            <Card className="p-8 hover:shadow-lg transition-shadow hover:border-accent relative">
+              <div className="absolute -top-6 left-8 w-12 h-12 bg-accent rounded-full flex items-center justify-center text-primary font-bold text-lg">
+                01
               </div>
-              <h3 className="text-xl font-semibold mb-4">Create Your Profile</h3>
-              <p className="text-foreground/60">
+              <div className="w-16 h-16 bg-accent/10 rounded-xl flex items-center justify-center mb-6">
+                <Users className="w-8 h-8 text-accent" />
+              </div>
+              <h3 className="text-xl font-semibold mb-3">Create Your Profile</h3>
+              <p className="text-foreground/60 leading-relaxed">
                 Set up your investor or founder profile with verified credentials. Share your expertise, track record, and investment thesis.
               </p>
             </Card>
-            <Card className="p-8 hover:shadow-lg transition-shadow">
-              <div className="w-12 h-12 bg-accent/10 rounded-lg flex items-center justify-center mb-6">
-                <Network className="w-6 h-6 text-accent" />
+            <Card className="p-8 hover:shadow-lg transition-shadow hover:border-accent relative">
+              <div className="absolute -top-6 left-8 w-12 h-12 bg-accent rounded-full flex items-center justify-center text-primary font-bold text-lg">
+                02
               </div>
-              <h3 className="text-xl font-semibold mb-4">Connect & Network</h3>
-              <p className="text-foreground/60">
+              <div className="w-16 h-16 bg-accent/10 rounded-xl flex items-center justify-center mb-6">
+                <Network className="w-8 h-8 text-accent" />
+              </div>
+              <h3 className="text-xl font-semibold mb-3">Connect & Network</h3>
+              <p className="text-foreground/60 leading-relaxed">
                 Browse opportunities or explore investors. Connect with pre-vetted members who align with your goals.
               </p>
             </Card>
-            <Card className="p-8 hover:shadow-lg transition-shadow">
-              <div className="w-12 h-12 bg-accent/10 rounded-lg flex items-center justify-center mb-6">
-                <TrendingUp className="w-6 h-6 text-accent" />
+            <Card className="p-8 hover:shadow-lg transition-shadow hover:border-accent relative">
+              <div className="absolute -top-6 left-8 w-12 h-12 bg-accent rounded-full flex items-center justify-center text-primary font-bold text-lg">
+                03
               </div>
-              <h3 className="text-xl font-semibold mb-4">Grow Together</h3>
-              <p className="text-foreground/60">
+              <div className="w-16 h-16 bg-accent/10 rounded-xl flex items-center justify-center mb-6">
+                <TrendingUp className="w-8 h-8 text-accent" />
+              </div>
+              <h3 className="text-xl font-semibold mb-3">Grow Together</h3>
+              <p className="text-foreground/60 leading-relaxed">
                 Collaborate on deals, share insights, and build long-term relationships. Track progress and celebrate wins.
               </p>
             </Card>
@@ -200,78 +242,159 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Features Section */}
-      <section id="features" className="py-20 px-4 md:px-6 bg-primary/5">
+      {/* Testimonials Section */}
+      <section className="py-20 px-4 md:px-6">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-bold mb-4">Trusted by Founders & Investors</h2>
+            <p className="text-lg text-foreground/60">See what members are saying about InFound</p>
+          </div>
+          <div className="grid md:grid-cols-3 gap-8">
+            <Card className="p-8 border-l-4 border-accent">
+              <div className="flex items-center gap-1 mb-4">
+                {[...Array(5)].map((_, i) => (
+                  <span key={i} className="text-accent text-lg">★</span>
+                ))}
+              </div>
+              <p className="text-foreground/60 mb-6 leading-relaxed">
+                "InFound connected me with the perfect investor for our Series A. The platform made the entire process seamless and efficient."
+              </p>
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-accent/20 rounded-full flex items-center justify-center text-accent font-semibold">
+                  SM
+                </div>
+                <div>
+                  <p className="font-semibold text-sm">Sarah Martinez</p>
+                  <p className="text-xs text-foreground/50">Founder, TechVenture</p>
+                </div>
+              </div>
+            </Card>
+            <Card className="p-8 border-l-4 border-accent">
+              <div className="flex items-center gap-1 mb-4">
+                {[...Array(5)].map((_, i) => (
+                  <span key={i} className="text-accent text-lg">★</span>
+                ))}
+              </div>
+              <p className="text-foreground/60 mb-6 leading-relaxed">
+                "As an investor, InFound gives me access to high-quality deal flow with thorough vetting. Highly recommend to any investor."
+              </p>
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-accent/20 rounded-full flex items-center justify-center text-accent font-semibold">
+                  JK
+                </div>
+                <div>
+                  <p className="font-semibold text-sm">James Kelly</p>
+                  <p className="text-xs text-foreground/50">Angel Investor</p>
+                </div>
+              </div>
+            </Card>
+            <Card className="p-8 border-l-4 border-accent">
+              <div className="flex items-center gap-1 mb-4">
+                {[...Array(5)].map((_, i) => (
+                  <span key={i} className="text-accent text-lg">★</span>
+                ))}
+              </div>
+              <p className="text-foreground/60 mb-6 leading-relaxed">
+                "The community events alone are worth the membership. Great way to build relationships and stay updated on the ecosystem."
+              </p>
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-accent/20 rounded-full flex items-center justify-center text-accent font-semibold">
+                  ER
+                </div>
+                <div>
+                  <p className="font-semibold text-sm">Emily Rodriguez</p>
+                  <p className="text-xs text-foreground/50">Founder, DataFlow</p>
+                </div>
+              </div>
+            </Card>
+          </div>
+        </div>
+      </section>
+
+      {/* Features Section */}
+      <section id="features" className="py-24 px-4 md:px-6 bg-primary/5">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-20">
             <h2 className="text-4xl md:text-5xl font-bold mb-4">Powerful Features</h2>
             <p className="text-lg text-foreground/60 max-w-2xl mx-auto">
               Everything you need to succeed in founder-led investing
             </p>
           </div>
           <div className="grid md:grid-cols-2 gap-8">
-            <div className="flex gap-6">
-              <div className="flex-shrink-0">
-                <CheckCircle2 className="w-6 h-6 text-primary mt-1" />
+            <div className="flex gap-6 p-6 rounded-xl hover:bg-primary/5 transition">
+              <div className="flex-shrink-0 mt-1">
+                <div className="w-10 h-10 bg-accent rounded-lg flex items-center justify-center">
+                  <CheckCircle2 className="w-6 h-6 text-primary" />
+                </div>
               </div>
               <div>
                 <h3 className="text-xl font-semibold mb-2">Verified Network</h3>
-                <p className="text-foreground/60">
+                <p className="text-foreground/60 leading-relaxed">
                   Every founder and investor is vetted and verified for authenticity and credibility.
                 </p>
               </div>
             </div>
-            <div className="flex gap-6">
-              <div className="flex-shrink-0">
-                <CheckCircle2 className="w-6 h-6 text-primary mt-1" />
+            <div className="flex gap-6 p-6 rounded-xl hover:bg-primary/5 transition">
+              <div className="flex-shrink-0 mt-1">
+                <div className="w-10 h-10 bg-accent rounded-lg flex items-center justify-center">
+                  <CheckCircle2 className="w-6 h-6 text-primary" />
+                </div>
               </div>
               <div>
                 <h3 className="text-xl font-semibold mb-2">Smart Matching</h3>
-                <p className="text-foreground/60">
+                <p className="text-foreground/60 leading-relaxed">
                   AI-powered algorithms connect you with ideal partners based on your goals and preferences.
                 </p>
               </div>
             </div>
-            <div className="flex gap-6">
-              <div className="flex-shrink-0">
-                <CheckCircle2 className="w-6 h-6 text-primary mt-1" />
+            <div className="flex gap-6 p-6 rounded-xl hover:bg-primary/5 transition">
+              <div className="flex-shrink-0 mt-1">
+                <div className="w-10 h-10 bg-accent rounded-lg flex items-center justify-center">
+                  <CheckCircle2 className="w-6 h-6 text-primary" />
+                </div>
               </div>
               <div>
                 <h3 className="text-xl font-semibold mb-2">Deal Management</h3>
-                <p className="text-foreground/60">
+                <p className="text-foreground/60 leading-relaxed">
                   Streamlined pipeline from pitch to close with built-in collaboration tools.
                 </p>
               </div>
             </div>
-            <div className="flex gap-6">
-              <div className="flex-shrink-0">
-                <CheckCircle2 className="w-6 h-6 text-primary mt-1" />
+            <div className="flex gap-6 p-6 rounded-xl hover:bg-primary/5 transition">
+              <div className="flex-shrink-0 mt-1">
+                <div className="w-10 h-10 bg-accent rounded-lg flex items-center justify-center">
+                  <CheckCircle2 className="w-6 h-6 text-primary" />
+                </div>
               </div>
               <div>
                 <h3 className="text-xl font-semibold mb-2">Portfolio Insights</h3>
-                <p className="text-foreground/60">
+                <p className="text-foreground/60 leading-relaxed">
                   Real-time analytics and reporting on your investments and portfolio performance.
                 </p>
               </div>
             </div>
-            <div className="flex gap-6">
-              <div className="flex-shrink-0">
-                <CheckCircle2 className="w-6 h-6 text-primary mt-1" />
+            <div className="flex gap-6 p-6 rounded-xl hover:bg-primary/5 transition">
+              <div className="flex-shrink-0 mt-1">
+                <div className="w-10 h-10 bg-accent rounded-lg flex items-center justify-center">
+                  <CheckCircle2 className="w-6 h-6 text-primary" />
+                </div>
               </div>
               <div>
                 <h3 className="text-xl font-semibold mb-2">Community Events</h3>
-                <p className="text-foreground/60">
+                <p className="text-foreground/60 leading-relaxed">
                   Exclusive pitch events, workshops, and networking sessions for members only.
                 </p>
               </div>
             </div>
-            <div className="flex gap-6">
-              <div className="flex-shrink-0">
-                <CheckCircle2 className="w-6 h-6 text-primary mt-1" />
+            <div className="flex gap-6 p-6 rounded-xl hover:bg-primary/5 transition">
+              <div className="flex-shrink-0 mt-1">
+                <div className="w-10 h-10 bg-accent rounded-lg flex items-center justify-center">
+                  <CheckCircle2 className="w-6 h-6 text-primary" />
+                </div>
               </div>
               <div>
                 <h3 className="text-xl font-semibold mb-2">Due Diligence Tools</h3>
-                <p className="text-foreground/60">
+                <p className="text-foreground/60 leading-relaxed">
                   Access to comprehensive data, documents, and background checks for informed decisions.
                 </p>
               </div>
@@ -281,49 +404,59 @@ export default function Home() {
       </section>
 
       {/* Community Section */}
-      <section id="community" className="py-20 px-4 md:px-6">
+      <section id="community" className="py-24 px-4 md:px-6">
         <div className="max-w-7xl mx-auto">
-          <div className="grid md:grid-cols-2 gap-12 items-center">
+          <div className="grid md:grid-cols-2 gap-16 items-center">
             <div>
-              <h2 className="text-4xl md:text-5xl font-bold mb-6">Join Our Community</h2>
-              <p className="text-lg text-foreground/60 mb-6">
-                Be part of a growing ecosystem where founders and investors collaborate to build the next generation of companies.
+              <h2 className="text-4xl md:text-5xl font-bold mb-6 leading-tight">Join Our Growing Community</h2>
+              <p className="text-lg text-foreground/60 mb-8 leading-relaxed">
+                Be part of a thriving ecosystem where founders and investors collaborate to build the next generation of breakthrough companies. Access exclusive opportunities, build meaningful relationships, and accelerate your success.
               </p>
-              <ul className="space-y-4 mb-8">
-                <li className="flex items-center gap-3">
-                  <div className="w-5 h-5 bg-primary rounded-full flex items-center justify-center flex-shrink-0">
-                    <span className="text-xs font-bold text-primary-foreground">✓</span>
+              <ul className="space-y-4 mb-10">
+                <li className="flex items-start gap-4">
+                  <div className="w-6 h-6 bg-accent rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <span className="text-xs font-bold text-primary">✓</span>
                   </div>
-                  <span>Access to curated investment opportunities</span>
+                  <span className="text-foreground">Access to curated investment opportunities</span>
                 </li>
-                <li className="flex items-center gap-3">
-                  <div className="w-5 h-5 bg-primary rounded-full flex items-center justify-center flex-shrink-0">
-                    <span className="text-xs font-bold text-primary-foreground">✓</span>
+                <li className="flex items-start gap-4">
+                  <div className="w-6 h-6 bg-accent rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <span className="text-xs font-bold text-primary">✓</span>
                   </div>
-                  <span>Direct access to experienced founders</span>
+                  <span className="text-foreground">Direct access to experienced founders and mentors</span>
                 </li>
-                <li className="flex items-center gap-3">
-                  <div className="w-5 h-5 bg-primary rounded-full flex items-center justify-center flex-shrink-0">
-                    <span className="text-xs font-bold text-primary-foreground">✓</span>
+                <li className="flex items-start gap-4">
+                  <div className="w-6 h-6 bg-accent rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <span className="text-xs font-bold text-primary">✓</span>
                   </div>
-                  <span>Exclusive educational resources and mentorship</span>
+                  <span className="text-foreground">Exclusive educational resources and workshops</span>
                 </li>
-                <li className="flex items-center gap-3">
-                  <div className="w-5 h-5 bg-primary rounded-full flex items-center justify-center flex-shrink-0">
-                    <span className="text-xs font-bold text-primary-foreground">✓</span>
+                <li className="flex items-start gap-4">
+                  <div className="w-6 h-6 bg-accent rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <span className="text-xs font-bold text-primary">✓</span>
                   </div>
-                  <span>Monthly networking events and pitch sessions</span>
+                  <span className="text-foreground">Monthly networking events and pitch sessions</span>
+                </li>
+                <li className="flex items-start gap-4">
+                  <div className="w-6 h-6 bg-accent rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <span className="text-xs font-bold text-primary">✓</span>
+                  </div>
+                  <span className="text-foreground">Comprehensive deal flow and due diligence support</span>
                 </li>
               </ul>
-              <Button size="lg" className="rounded-full px-8 h-12">
+              <Button size="lg" className="rounded-full px-8 h-12 text-base font-semibold">
                 Join InFound Today
                 <ArrowRight className="w-4 h-4 ml-2" />
               </Button>
             </div>
-            <div className="bg-gradient-to-br from-primary/10 to-accent/10 rounded-2xl p-12 min-h-96 flex items-center justify-center border border-primary/20">
-              <div className="text-center">
-                <Briefcase className="w-16 h-16 text-primary/40 mx-auto mb-4" />
-                <p className="text-foreground/40">Community visual representation</p>
+            <div className="bg-gradient-to-br from-primary via-primary/80 to-primary/60 rounded-3xl p-12 min-h-96 flex flex-col items-center justify-center relative overflow-hidden">
+              <div className="absolute inset-0 opacity-10">
+                <div className="absolute top-0 right-0 w-96 h-96 bg-accent rounded-full mix-blend-multiply filter blur-3xl"></div>
+              </div>
+              <div className="relative z-10 text-center">
+                <Network className="w-20 h-20 text-accent/60 mx-auto mb-6" />
+                <h3 className="text-2xl font-bold text-accent mb-3">A Network Built on Trust</h3>
+                <p className="text-accent/70">Connecting visionary founders with strategic investors</p>
               </div>
             </div>
           </div>
@@ -331,17 +464,22 @@ export default function Home() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 px-4 md:px-6 bg-primary text-primary-foreground">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-4xl md:text-5xl font-bold mb-6">Ready to Transform Your Investing?</h2>
-          <p className="text-lg opacity-90 mb-8 max-w-2xl mx-auto">
-            Join thousands of founders and investors already collaborating on InFound
+      <section className="py-24 px-4 md:px-6 bg-primary text-primary-foreground relative overflow-hidden">
+        <div className="absolute inset-0 opacity-10">
+          <div className="absolute top-0 right-0 w-96 h-96 bg-accent rounded-full mix-blend-multiply filter blur-3xl"></div>
+          <div className="absolute bottom-0 left-0 w-96 h-96 bg-accent rounded-full mix-blend-multiply filter blur-3xl"></div>
+        </div>
+        <div className="max-w-4xl mx-auto text-center relative z-10">
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">Ready to Transform Your Investing?</h2>
+          <p className="text-lg md:text-xl opacity-90 mb-10 max-w-2xl mx-auto leading-relaxed">
+            Join thousands of founders and investors already collaborating on InFound. Start building meaningful relationships today.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Button size="lg" variant="secondary" className="rounded-full px-8 h-12">
+            <Button size="lg" variant="secondary" className="rounded-full px-10 h-13 text-base font-semibold">
               Get Started Free
+              <ArrowRight className="w-4 h-4 ml-2" />
             </Button>
-            <Button size="lg" variant="outline" className="rounded-full px-8 h-12 border-primary-foreground text-primary-foreground hover:bg-primary-foreground/10">
+            <Button size="lg" variant="outline" className="rounded-full px-10 h-13 border-primary-foreground text-primary-foreground hover:bg-primary-foreground/10 text-base font-semibold">
               Watch Demo
             </Button>
           </div>
@@ -349,9 +487,9 @@ export default function Home() {
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-border py-12 px-4 md:px-6 bg-foreground/5">
+      <footer className="border-t border-border py-16 px-4 md:px-6 bg-primary/5">
         <div className="max-w-7xl mx-auto">
-          <div className="grid md:grid-cols-4 gap-8 mb-12">
+          <div className="grid md:grid-cols-5 gap-8 mb-12">
             <div>
               <div className="flex items-center gap-2 mb-4">
                 <Image 
@@ -361,43 +499,56 @@ export default function Home() {
                   height={32}
                   className="w-8 h-8"
                 />
-                <span className="font-semibold">InFound</span>
+                <span className="font-bold text-lg">InFound</span>
               </div>
-              <p className="text-sm text-foreground/60">
-                Connecting founders and investors to build the future.
+              <p className="text-sm text-foreground/60 leading-relaxed">
+                Connecting founders and investors to build the next generation of companies.
               </p>
             </div>
             <div>
-              <h4 className="font-semibold mb-4">Product</h4>
-              <ul className="space-y-2 text-sm text-foreground/60">
-                <li><Link href="#" className="hover:text-foreground transition">Features</Link></li>
-                <li><Link href="#" className="hover:text-foreground transition">Pricing</Link></li>
-                <li><Link href="#" className="hover:text-foreground transition">Security</Link></li>
+              <h4 className="font-semibold mb-6 text-foreground">Product</h4>
+              <ul className="space-y-3 text-sm">
+                <li><Link href="#" className="text-foreground/60 hover:text-accent transition">Features</Link></li>
+                <li><Link href="#" className="text-foreground/60 hover:text-accent transition">Pricing</Link></li>
+                <li><Link href="#" className="text-foreground/60 hover:text-accent transition">Security</Link></li>
+                <li><Link href="#" className="text-foreground/60 hover:text-accent transition">Roadmap</Link></li>
               </ul>
             </div>
             <div>
-              <h4 className="font-semibold mb-4">Resources</h4>
-              <ul className="space-y-2 text-sm text-foreground/60">
-                <li><Link href="#" className="hover:text-foreground transition">Blog</Link></li>
-                <li><Link href="#" className="hover:text-foreground transition">Guides</Link></li>
-                <li><Link href="#" className="hover:text-foreground transition">Support</Link></li>
+              <h4 className="font-semibold mb-6 text-foreground">Resources</h4>
+              <ul className="space-y-3 text-sm">
+                <li><Link href="#" className="text-foreground/60 hover:text-accent transition">Blog</Link></li>
+                <li><Link href="#" className="text-foreground/60 hover:text-accent transition">Guides</Link></li>
+                <li><Link href="#" className="text-foreground/60 hover:text-accent transition">Support</Link></li>
+                <li><Link href="#" className="text-foreground/60 hover:text-accent transition">FAQ</Link></li>
               </ul>
             </div>
             <div>
-              <h4 className="font-semibold mb-4">Company</h4>
-              <ul className="space-y-2 text-sm text-foreground/60">
-                <li><Link href="#" className="hover:text-foreground transition">About</Link></li>
-                <li><Link href="#" className="hover:text-foreground transition">Privacy</Link></li>
-                <li><Link href="#" className="hover:text-foreground transition">Terms</Link></li>
+              <h4 className="font-semibold mb-6 text-foreground">Company</h4>
+              <ul className="space-y-3 text-sm">
+                <li><Link href="#" className="text-foreground/60 hover:text-accent transition">About</Link></li>
+                <li><Link href="#" className="text-foreground/60 hover:text-accent transition">Careers</Link></li>
+                <li><Link href="#" className="text-foreground/60 hover:text-accent transition">Press</Link></li>
+                <li><Link href="#" className="text-foreground/60 hover:text-accent transition">Contact</Link></li>
+              </ul>
+            </div>
+            <div>
+              <h4 className="font-semibold mb-6 text-foreground">Legal</h4>
+              <ul className="space-y-3 text-sm">
+                <li><Link href="#" className="text-foreground/60 hover:text-accent transition">Privacy</Link></li>
+                <li><Link href="#" className="text-foreground/60 hover:text-accent transition">Terms</Link></li>
+                <li><Link href="#" className="text-foreground/60 hover:text-accent transition">Cookies</Link></li>
+                <li><Link href="#" className="text-foreground/60 hover:text-accent transition">License</Link></li>
               </ul>
             </div>
           </div>
-          <div className="border-t border-border pt-8 flex flex-col md:flex-row items-center justify-between text-sm text-foreground/60">
-            <p>&copy; 2026 InFound Community. All rights reserved.</p>
-            <div className="flex gap-6 mt-4 md:mt-0">
-              <Link href="#" className="hover:text-foreground transition">Twitter</Link>
-              <Link href="#" className="hover:text-foreground transition">LinkedIn</Link>
-              <Link href="#" className="hover:text-foreground transition">Discord</Link>
+          <div className="border-t border-border pt-8 flex flex-col md:flex-row items-center justify-between text-sm">
+            <p className="text-foreground/60">&copy; 2026 InFound Community. All rights reserved.</p>
+            <div className="flex gap-8 mt-6 md:mt-0">
+              <Link href="#" className="text-foreground/60 hover:text-accent transition font-semibold">Twitter</Link>
+              <Link href="#" className="text-foreground/60 hover:text-accent transition font-semibold">LinkedIn</Link>
+              <Link href="#" className="text-foreground/60 hover:text-accent transition font-semibold">Discord</Link>
+              <Link href="#" className="text-foreground/60 hover:text-accent transition font-semibold">GitHub</Link>
             </div>
           </div>
         </div>

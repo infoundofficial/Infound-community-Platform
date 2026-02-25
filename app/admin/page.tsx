@@ -26,6 +26,10 @@ export default function AdminPage() {
   const [editingTestimonial, setEditingTestimonial] = useState<any>(null);
   const [eventImageFile, setEventImageFile] = useState<File | null>(null);
   const [testimonialImageFile, setTestimonialImageFile] = useState<File | null>(null);
+  const [uploadingEventImage, setUploadingEventImage] = useState(false);
+  const [uploadingTestimonialImage, setUploadingTestimonialImage] = useState(false);
+  const [eventImagePreview, setEventImagePreview] = useState<string | null>(null);
+  const [testimonialImagePreview, setTestimonialImagePreview] = useState<string | null>(null);
   const eventFileInputRef = useRef<HTMLInputElement>(null);
   const testimonialFileInputRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
@@ -89,16 +93,18 @@ export default function AdminPage() {
     setUpdating(null);
   };
 
-  const handleEventSubmit = async (e: React.FormEvent) => {
+  const handleEventSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     
     let imageUrl = editingEvent?.image_url || null;
+    setUploadingEventImage(true);
     
     if (eventImageFile) {
       const uploadedUrl = await uploadEventImage(eventImageFile, editingEvent?.id || 'new');
       if (uploadedUrl) {
         imageUrl = uploadedUrl;
+        setEventImagePreview(uploadedUrl);
       }
     }
     
@@ -125,6 +131,7 @@ export default function AdminPage() {
         setEditingEvent(null);
         setShowEventForm(false);
         setEventImageFile(null);
+        setEventImagePreview(null);
       }
     } else {
       const { data, error } = await supabase
@@ -137,20 +144,24 @@ export default function AdminPage() {
         setEvents([data, ...events]);
         setShowEventForm(false);
         setEventImageFile(null);
+        setEventImagePreview(null);
       }
     }
+    setUploadingEventImage(false);
   };
 
-  const handleTestimonialSubmit = async (e: React.FormEvent) => {
+  const handleTestimonialSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     
     let imageUrl = editingTestimonial?.image_url || null;
+    setUploadingTestimonialImage(true);
     
     if (testimonialImageFile) {
       const uploadedUrl = await uploadTestimonialImage(testimonialImageFile, editingTestimonial?.id || 'new');
       if (uploadedUrl) {
         imageUrl = uploadedUrl;
+        setTestimonialImagePreview(uploadedUrl);
       }
     }
     
@@ -178,6 +189,7 @@ export default function AdminPage() {
         setEditingTestimonial(null);
         setShowTestimonialForm(false);
         setTestimonialImageFile(null);
+        setTestimonialImagePreview(null);
       }
     } else {
       const { data, error } = await supabase
@@ -190,11 +202,20 @@ export default function AdminPage() {
         setTestimonials([data, ...testimonials]);
         setShowTestimonialForm(false);
         setTestimonialImageFile(null);
+        setTestimonialImagePreview(null);
       }
     }
+    setUploadingTestimonialImage(false);
   };
 
   const deleteEvent = async (id: string) => {
+    const event = events.find(e => e.id === id);
+    if (event?.image_url) {
+      const fileName = event.image_url.split('/').pop();
+      if (fileName) {
+        await supabase.storage.from('event-images').remove([fileName]);
+      }
+    }
     const { error } = await supabase.from('events').delete().eq('id', id);
     if (!error) {
       setEvents(events.filter(e => e.id !== id));
@@ -202,6 +223,13 @@ export default function AdminPage() {
   };
 
   const deleteTestimonial = async (id: string) => {
+    const testimonial = testimonials.find(t => t.id === id);
+    if (testimonial?.image_url) {
+      const fileName = testimonial.image_url.split('/').pop();
+      if (fileName) {
+        await supabase.storage.from('testimonial-images').remove([fileName]);
+      }
+    }
     const { error } = await supabase.from('testimonials').delete().eq('id', id);
     if (!error) {
       setTestimonials(testimonials.filter(t => t.id !== id));
@@ -390,19 +418,33 @@ export default function AdminPage() {
                     id="event-image"
                     type="file"
                     accept="image/*"
-                    onChange={(e) => setEventImageFile(e.target.files?.[0] || null)}
+                    onChange={(e) => {
+                      const file = e.target.files?.[0] || null;
+                      setEventImageFile(file);
+                      if (file) {
+                        const preview = URL.createObjectURL(file);
+                        setEventImagePreview(preview);
+                      }
+                    }}
                     ref={eventFileInputRef}
+                    disabled={uploadingEventImage}
                   />
-                  {editingEvent?.image_url && (
-                    <div className="mt-2">
-                      <p className="text-sm text-foreground/60 mb-1">Current image:</p>
-                      <img src={editingEvent.image_url} alt="Current event" className="w-32 h-20 object-cover rounded" />
+                  {uploadingEventImage && (
+                    <div className="mt-2 flex items-center gap-2 text-sm text-accent">
+                      <div className="animate-spin w-4 h-4 border-2 border-accent border-t-transparent rounded-full" />
+                      <span>Uploading image...</span>
                     </div>
                   )}
-                  {eventImageFile && (
-                    <div className="mt-2">
-                      <p className="text-sm text-foreground/60 mb-1">New image selected:</p>
-                      <p className="text-sm">{eventImageFile.name}</p>
+                  {(eventImagePreview || editingEvent?.image_url) && (
+                    <div className="mt-4 w-full">
+                      <p className="text-sm text-foreground/60 mb-2">
+                        {eventImagePreview ? 'New image preview:' : 'Current image:'}
+                      </p>
+                      <img 
+                        src={eventImagePreview || editingEvent?.image_url} 
+                        alt="Preview" 
+                        className="w-full h-48 object-cover rounded-lg border border-border bg-muted/20" 
+                      />
                     </div>
                   )}
                 </div>
@@ -413,6 +455,9 @@ export default function AdminPage() {
                   <Button type="button" variant="outline" onClick={() => {
                     setShowEventForm(false);
                     setEditingEvent(null);
+                    setEventImageFile(null);
+                    setEventImagePreview(null);
+                    setUploadingEventImage(false);
                   }}>
                     Cancel
                   </Button>
@@ -539,19 +584,33 @@ export default function AdminPage() {
                     id="testimonial-image"
                     type="file"
                     accept="image/*"
-                    onChange={(e) => setTestimonialImageFile(e.target.files?.[0] || null)}
+                    onChange={(e) => {
+                      const file = e.target.files?.[0] || null;
+                      setTestimonialImageFile(file);
+                      if (file) {
+                        const preview = URL.createObjectURL(file);
+                        setTestimonialImagePreview(preview);
+                      }
+                    }}
                     ref={testimonialFileInputRef}
+                    disabled={uploadingTestimonialImage}
                   />
-                  {editingTestimonial?.image_url && (
-                    <div className="mt-2">
-                      <p className="text-sm text-foreground/60 mb-1">Current image:</p>
-                      <img src={editingTestimonial.image_url} alt="Current testimonial" className="w-20 h-20 object-cover rounded-full" />
+                  {uploadingTestimonialImage && (
+                    <div className="mt-2 flex items-center gap-2 text-sm text-accent">
+                      <div className="animate-spin w-4 h-4 border-2 border-accent border-t-transparent rounded-full" />
+                      <span>Uploading image...</span>
                     </div>
                   )}
-                  {testimonialImageFile && (
+                  {(testimonialImagePreview || editingTestimonial?.image_url) && (
                     <div className="mt-2">
-                      <p className="text-sm text-foreground/60 mb-1">New image selected:</p>
-                      <p className="text-sm">{testimonialImageFile.name}</p>
+                      <p className="text-sm text-foreground/60 mb-1">
+                        {testimonialImagePreview ? 'New image preview:' : 'Current image:'}
+                      </p>
+                      <img 
+                        src={testimonialImagePreview || editingTestimonial?.image_url} 
+                        alt="Preview" 
+                        className="w-20 h-20 object-cover rounded-full" 
+                      />
                     </div>
                   )}
                 </div>
@@ -562,6 +621,9 @@ export default function AdminPage() {
                   <Button type="button" variant="outline" onClick={() => {
                     setShowTestimonialForm(false);
                     setEditingTestimonial(null);
+                    setTestimonialImageFile(null);
+                    setTestimonialImagePreview(null);
+                    setUploadingTestimonialImage(false);
                   }}>
                     Cancel
                   </Button>

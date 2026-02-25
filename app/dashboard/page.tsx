@@ -21,14 +21,42 @@ export default function DashboardPage() {
         return;
       }
 
-      const { data: profile } = await supabase.from('users').select('*').eq('id', session.user.id).single();
+      const { data: profile, error } = await supabase.from('profiles').select('*').eq('id', session.user.id).single();
 
-      if (profile.role !== 'user') {
+      let userProfile = profile;
+
+      if (error && error.code === 'PGRST116') { // No rows found
+        // Create profile for existing user
+        const { data: newProfile, error: insertError } = await supabase
+          .from('profiles')
+          .insert({
+            id: session.user.id,
+            full_name: session.user.user_metadata?.full_name || 'User',
+            email: session.user.email,
+            role: 'user'
+          })
+          .select()
+          .single();
+
+        if (insertError) {
+          console.error('Failed to create profile:', insertError);
+          router.push('/auth');
+          return;
+        }
+
+        userProfile = newProfile;
+      } else if (error || !profile) {
+        console.error('Profile error:', error);
+        router.push('/auth');
+        return;
+      }
+
+      if (userProfile.role !== 'user') {
         router.push('/admin');
         return;
       }
 
-      setUser(profile);
+      setUser(userProfile);
       setLoading(false);
     };
 

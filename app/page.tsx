@@ -7,13 +7,46 @@ import { Card } from '@/components/ui/card';
 import { ArrowRight, Zap, Network, TrendingUp, Users, Briefcase, CheckCircle2, Moon, Sun } from 'lucide-react';
 import { useTheme } from 'next-themes';
 import { useEffect, useState } from 'react';
+import { supabase } from '@/lib/supabase';
 
 export default function Home() {
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
+  const [events, setEvents] = useState<any[]>([]);
+  const [testimonials, setTestimonials] = useState<any[]>([]);
 
   useEffect(() => {
     setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    const fetchEvents = async () => {
+      const { data, error } = await supabase
+        .from('events')
+        .select('*')
+        .order('date', { ascending: false })
+        .limit(3);
+
+      if (!error && data) {
+        setEvents(data);
+      }
+    };
+
+    const fetchTestimonials = async () => {
+      const { data, error } = await supabase
+        .from('testimonials')
+        .select('*')
+        .eq('featured', true)
+        .order('created_at', { ascending: false })
+        .limit(3);
+
+      if (!error && data) {
+        setTestimonials(data);
+      }
+    };
+
+    fetchEvents();
+    fetchTestimonials();
   }, []);
 
   const toggleTheme = () => {
@@ -134,54 +167,28 @@ export default function Home() {
             </Link>
           </div>
           <div className="grid md:grid-cols-3 gap-8">
-            <Card className="p-8 hover:shadow-lg transition-shadow border-l-4 border-accent">
-              <div className="flex items-start justify-between mb-4">
-                <div>
-                  <p className="text-sm text-accent font-semibold">March 15, 2024</p>
-                  <h3 className="text-2xl font-bold mt-2">Founder Pitch Night</h3>
-                </div>
+            {events.length > 0 ? (
+              events.map((event) => (
+                <Card key={event.id} className="p-8 hover:shadow-lg transition-shadow border-l-4 border-accent">
+                  <div className="flex items-start justify-between mb-4">
+                    <div>
+                      <p className="text-sm text-accent font-semibold">{new Date(event.date).toLocaleDateString()}</p>
+                      <h3 className="text-2xl font-bold mt-2">{event.title}</h3>
+                    </div>
+                  </div>
+                  <p className="text-foreground/60 mb-4">{event.description}</p>
+                  <div className="flex items-center gap-2 text-sm text-foreground/50 mb-6">
+                    <Briefcase className="w-4 h-4" />
+                    <span>{event.location}</span>
+                  </div>
+                  <Button className="w-full rounded-lg">Register Now</Button>
+                </Card>
+              ))
+            ) : (
+              <div className="col-span-3 text-center py-12">
+                <p className="text-foreground/60">No upcoming events. Check back soon!</p>
               </div>
-              <p className="text-foreground/60 mb-4">
-                Connect with 50+ investors in a casual networking setting. Pitch your startup or discover the next big opportunity.
-              </p>
-              <div className="flex items-center gap-2 text-sm text-foreground/50 mb-6">
-                <Briefcase className="w-4 h-4" />
-                <span>San Francisco, CA</span>
-              </div>
-              <Button className="w-full rounded-lg">Register Now</Button>
-            </Card>
-            <Card className="p-8 hover:shadow-lg transition-shadow border-l-4 border-accent">
-              <div className="flex items-start justify-between mb-4">
-                <div>
-                  <p className="text-sm text-accent font-semibold">March 22, 2024</p>
-                  <h3 className="text-2xl font-bold mt-2">Investor Workshop</h3>
-                </div>
-              </div>
-              <p className="text-foreground/60 mb-4">
-                Learn advanced investment strategies and diligence techniques from seasoned investors. Limited to 30 participants.
-              </p>
-              <div className="flex items-center gap-2 text-sm text-foreground/50 mb-6">
-                <Briefcase className="w-4 h-4" />
-                <span>New York, NY</span>
-              </div>
-              <Button className="w-full rounded-lg">Register Now</Button>
-            </Card>
-            <Card className="p-8 hover:shadow-lg transition-shadow border-l-4 border-accent">
-              <div className="flex items-start justify-between mb-4">
-                <div>
-                  <p className="text-sm text-accent font-semibold">April 5, 2024</p>
-                  <h3 className="text-2xl font-bold mt-2">Networking Summit</h3>
-                </div>
-              </div>
-              <p className="text-foreground/60 mb-4">
-                Our biggest event of the year. Two days of keynotes, panels, and networking with 500+ founders and investors.
-              </p>
-              <div className="flex items-center gap-2 text-sm text-foreground/50 mb-6">
-                <Briefcase className="w-4 h-4" />
-                <span>Los Angeles, CA</span>
-              </div>
-              <Button className="w-full rounded-lg">Register Now</Button>
-            </Card>
+            )}
           </div>
         </div>
       </section>
@@ -247,63 +254,87 @@ export default function Home() {
             <p className="text-lg text-foreground/60">See what members are saying about InFound</p>
           </div>
           <div className="grid md:grid-cols-3 gap-8">
-            <Card className="p-8 border-l-4 border-accent">
-              <div className="flex items-center gap-1 mb-4">
-                {[...Array(5)].map((_, i) => (
-                  <span key={i} className="text-accent text-lg">★</span>
-                ))}
-              </div>
-              <p className="text-foreground/60 mb-6 leading-relaxed">
-                "InFound connected me with the perfect investor for our Series A. The platform made the entire process seamless and efficient."
-              </p>
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-accent/20 rounded-full flex items-center justify-center text-accent font-semibold">
-                  SM
-                </div>
-                <div>
-                  <p className="font-semibold text-sm">Sarah Martinez</p>
-                  <p className="text-xs text-foreground/50">Founder, TechVenture</p>
-                </div>
-              </div>
-            </Card>
-            <Card className="p-8 border-l-4 border-accent">
-              <div className="flex items-center gap-1 mb-4">
-                {[...Array(5)].map((_, i) => (
-                  <span key={i} className="text-accent text-lg">★</span>
-                ))}
-              </div>
-              <p className="text-foreground/60 mb-6 leading-relaxed">
-                "As an investor, InFound gives me access to high-quality deal flow with thorough vetting. Highly recommend to any investor."
-              </p>
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-accent/20 rounded-full flex items-center justify-center text-accent font-semibold">
-                  JK
-                </div>
-                <div>
-                  <p className="font-semibold text-sm">James Kelly</p>
-                  <p className="text-xs text-foreground/50">Angel Investor</p>
-                </div>
-              </div>
-            </Card>
-            <Card className="p-8 border-l-4 border-accent">
-              <div className="flex items-center gap-1 mb-4">
-                {[...Array(5)].map((_, i) => (
-                  <span key={i} className="text-accent text-lg">★</span>
-                ))}
-              </div>
-              <p className="text-foreground/60 mb-6 leading-relaxed">
-                "The community events alone are worth the membership. Great way to build relationships and stay updated on the ecosystem."
-              </p>
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-accent/20 rounded-full flex items-center justify-center text-accent font-semibold">
-                  ER
-                </div>
-                <div>
-                  <p className="font-semibold text-sm">Emily Rodriguez</p>
-                  <p className="text-xs text-foreground/50">Founder, DataFlow</p>
-                </div>
-              </div>
-            </Card>
+            {testimonials.length > 0 ? (
+              testimonials.map((testimonial) => (
+                <Card key={testimonial.id} className="p-8 border-l-4 border-accent">
+                  <div className="flex items-center gap-1 mb-4">
+                    {[...Array(testimonial.rating)].map((_, i) => (
+                      <span key={i} className="text-accent text-lg">★</span>
+                    ))}
+                  </div>
+                  <p className="text-foreground/60 mb-6 leading-relaxed">"{testimonial.content}"</p>
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 bg-accent/20 rounded-full flex items-center justify-center text-accent font-semibold">
+                      {testimonial.name.split(' ').map((n: string) => n[0]).join('').slice(0, 2).toUpperCase()}
+                    </div>
+                    <div>
+                      <p className="font-semibold text-sm">{testimonial.name}</p>
+                      <p className="text-xs text-foreground/50">{testimonial.role}</p>
+                    </div>
+                  </div>
+                </Card>
+              ))
+            ) : (
+              <>
+                <Card className="p-8 border-l-4 border-accent">
+                  <div className="flex items-center gap-1 mb-4">
+                    {[...Array(5)].map((_, i) => (
+                      <span key={i} className="text-accent text-lg">★</span>
+                    ))}
+                  </div>
+                  <p className="text-foreground/60 mb-6 leading-relaxed">
+                    "InFound connected me with the perfect investor for our Series A. The platform made the entire process seamless and efficient."
+                  </p>
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 bg-accent/20 rounded-full flex items-center justify-center text-accent font-semibold">
+                      SM
+                    </div>
+                    <div>
+                      <p className="font-semibold text-sm">Sarah Martinez</p>
+                      <p className="text-xs text-foreground/50">Founder, TechVenture</p>
+                    </div>
+                  </div>
+                </Card>
+                <Card className="p-8 border-l-4 border-accent">
+                  <div className="flex items-center gap-1 mb-4">
+                    {[...Array(5)].map((_, i) => (
+                      <span key={i} className="text-accent text-lg">★</span>
+                    ))}
+                  </div>
+                  <p className="text-foreground/60 mb-6 leading-relaxed">
+                    "As an investor, InFound gives me access to high-quality deal flow with thorough vetting. Highly recommend to any investor."
+                  </p>
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 bg-accent/20 rounded-full flex items-center justify-center text-accent font-semibold">
+                      JK
+                    </div>
+                    <div>
+                      <p className="font-semibold text-sm">James Kelly</p>
+                      <p className="text-xs text-foreground/50">Angel Investor</p>
+                    </div>
+                  </div>
+                </Card>
+                <Card className="p-8 border-l-4 border-accent">
+                  <div className="flex items-center gap-1 mb-4">
+                    {[...Array(5)].map((_, i) => (
+                      <span key={i} className="text-accent text-lg">★</span>
+                    ))}
+                  </div>
+                  <p className="text-foreground/60 mb-6 leading-relaxed">
+                    "The community events alone are worth the membership. Great way to build relationships and stay updated on the ecosystem."
+                  </p>
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 bg-accent/20 rounded-full flex items-center justify-center text-accent font-semibold">
+                      ER
+                    </div>
+                    <div>
+                      <p className="font-semibold text-sm">Emily Rodriguez</p>
+                      <p className="text-xs text-foreground/50">Founder, DataFlow</p>
+                    </div>
+                  </div>
+                </Card>
+              </>
+            )}
           </div>
         </div>
       </section>

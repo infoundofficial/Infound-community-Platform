@@ -161,7 +161,7 @@ export default function Home() {
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-bold mb-4">Upcoming Events</h2>
             <p className="text-lg text-foreground/60 mb-6">Join us at our next gathering.</p>
-            <Link href="#" className="inline-flex items-center gap-2 text-accent hover:text-accent/80 transition font-semibold">
+            <Link href="/events" className="inline-flex items-center gap-2 text-accent hover:text-accent/80 transition font-semibold">
               View All Events
               <ArrowRight className="w-4 h-4" />
             </Link>
@@ -591,7 +591,8 @@ export default function Home() {
           </div>
           <div className="border-t border-border pt-8 flex flex-col md:flex-row items-center justify-between text-sm">
             <p className="text-foreground/60">&copy; 2026 InFound Community. All rights reserved.</p>
-            <div className="flex gap-8 mt-6 md:mt-0">
+            <p className="text-foreground/60">Design and developed by DRUPTO</p>
+            <div className="flex gap-8">
               <Link href="#" className="text-foreground/60 hover:text-accent transition font-semibold">Twitter</Link>
               <Link href="#" className="text-foreground/60 hover:text-accent transition font-semibold">LinkedIn</Link>
               <Link href="#" className="text-foreground/60 hover:text-accent transition font-semibold">Discord</Link>

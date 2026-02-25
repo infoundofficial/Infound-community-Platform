@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
@@ -10,6 +10,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { supabase } from '@/lib/supabase';
+import { uploadEventImage, uploadTestimonialImage } from '@/lib/storage';
 import { useRouter } from 'next/navigation';
 
 export default function AdminPage() {
@@ -23,6 +24,10 @@ export default function AdminPage() {
   const [showTestimonialForm, setShowTestimonialForm] = useState(false);
   const [editingEvent, setEditingEvent] = useState<any>(null);
   const [editingTestimonial, setEditingTestimonial] = useState<any>(null);
+  const [eventImageFile, setEventImageFile] = useState<File | null>(null);
+  const [testimonialImageFile, setTestimonialImageFile] = useState<File | null>(null);
+  const eventFileInputRef = useRef<HTMLInputElement>(null);
+  const testimonialFileInputRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
 
   useEffect(() => {
@@ -88,13 +93,26 @@ export default function AdminPage() {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     
-    const eventData = {
+    let imageUrl = editingEvent?.image_url || null;
+    
+    if (eventImageFile) {
+      const uploadedUrl = await uploadEventImage(eventImageFile, editingEvent?.id || 'new');
+      if (uploadedUrl) {
+        imageUrl = uploadedUrl;
+      }
+    }
+    
+    const eventData: any = {
       title: formData.get('title') as string,
       description: formData.get('description') as string,
       date: formData.get('date') as string,
       location: formData.get('location') as string,
       created_by: user.id
     };
+    
+    if (imageUrl) {
+      eventData.image_url = imageUrl;
+    }
 
     if (editingEvent) {
       const { error } = await supabase
@@ -106,6 +124,7 @@ export default function AdminPage() {
         setEvents(events.map(e => e.id === editingEvent.id ? { ...eventData, id: editingEvent.id } : e));
         setEditingEvent(null);
         setShowEventForm(false);
+        setEventImageFile(null);
       }
     } else {
       const { data, error } = await supabase
@@ -117,6 +136,7 @@ export default function AdminPage() {
       if (!error) {
         setEvents([data, ...events]);
         setShowEventForm(false);
+        setEventImageFile(null);
       }
     }
   };
@@ -125,7 +145,16 @@ export default function AdminPage() {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     
-    const testimonialData = {
+    let imageUrl = editingTestimonial?.image_url || null;
+    
+    if (testimonialImageFile) {
+      const uploadedUrl = await uploadTestimonialImage(testimonialImageFile, editingTestimonial?.id || 'new');
+      if (uploadedUrl) {
+        imageUrl = uploadedUrl;
+      }
+    }
+    
+    const testimonialData: any = {
       name: formData.get('name') as string,
       role: formData.get('role') as string,
       content: formData.get('content') as string,
@@ -133,6 +162,10 @@ export default function AdminPage() {
       featured: formData.get('featured') === 'true',
       created_by: user.id
     };
+    
+    if (imageUrl) {
+      testimonialData.image_url = imageUrl;
+    }
 
     if (editingTestimonial) {
       const { error } = await supabase
@@ -144,6 +177,7 @@ export default function AdminPage() {
         setTestimonials(testimonials.map(t => t.id === editingTestimonial.id ? { ...testimonialData, id: editingTestimonial.id } : t));
         setEditingTestimonial(null);
         setShowTestimonialForm(false);
+        setTestimonialImageFile(null);
       }
     } else {
       const { data, error } = await supabase
@@ -155,6 +189,7 @@ export default function AdminPage() {
       if (!error) {
         setTestimonials([data, ...testimonials]);
         setShowTestimonialForm(false);
+        setTestimonialImageFile(null);
       }
     }
   };
@@ -349,6 +384,28 @@ export default function AdminPage() {
                     required
                   />
                 </div>
+                <div>
+                  <Label htmlFor="event-image">Event Image</Label>
+                  <Input
+                    id="event-image"
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => setEventImageFile(e.target.files?.[0] || null)}
+                    ref={eventFileInputRef}
+                  />
+                  {editingEvent?.image_url && (
+                    <div className="mt-2">
+                      <p className="text-sm text-foreground/60 mb-1">Current image:</p>
+                      <img src={editingEvent.image_url} alt="Current event" className="w-32 h-20 object-cover rounded" />
+                    </div>
+                  )}
+                  {eventImageFile && (
+                    <div className="mt-2">
+                      <p className="text-sm text-foreground/60 mb-1">New image selected:</p>
+                      <p className="text-sm">{eventImageFile.name}</p>
+                    </div>
+                  )}
+                </div>
                 <div className="flex gap-2">
                   <Button type="submit">
                     {editingEvent ? 'Update Event' : 'Create Event'}
@@ -367,6 +424,11 @@ export default function AdminPage() {
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {events.map((event) => (
               <Card key={event.id} className="p-6">
+                {event.image_url && (
+                  <div className="mb-4">
+                    <img src={event.image_url} alt={event.title} className="w-full h-32 object-cover rounded-lg" />
+                  </div>
+                )}
                 <div className="flex justify-between items-start mb-4">
                   <h3 className="text-lg font-semibold">{event.title}</h3>
                   <div className="flex gap-2">
@@ -471,6 +533,28 @@ export default function AdminPage() {
                     </SelectContent>
                   </Select>
                 </div>
+                <div>
+                  <Label htmlFor="testimonial-image">Profile Image</Label>
+                  <Input
+                    id="testimonial-image"
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => setTestimonialImageFile(e.target.files?.[0] || null)}
+                    ref={testimonialFileInputRef}
+                  />
+                  {editingTestimonial?.image_url && (
+                    <div className="mt-2">
+                      <p className="text-sm text-foreground/60 mb-1">Current image:</p>
+                      <img src={editingTestimonial.image_url} alt="Current testimonial" className="w-20 h-20 object-cover rounded-full" />
+                    </div>
+                  )}
+                  {testimonialImageFile && (
+                    <div className="mt-2">
+                      <p className="text-sm text-foreground/60 mb-1">New image selected:</p>
+                      <p className="text-sm">{testimonialImageFile.name}</p>
+                    </div>
+                  )}
+                </div>
                 <div className="flex gap-2">
                   <Button type="submit">
                     {editingTestimonial ? 'Update Testimonial' : 'Create Testimonial'}
@@ -490,7 +574,16 @@ export default function AdminPage() {
             {testimonials.map((testimonial) => (
               <Card key={testimonial.id} className="p-6">
                 <div className="flex justify-between items-start mb-4">
-                  <h3 className="text-lg font-semibold">{testimonial.name}</h3>
+                  <div className="flex items-center gap-3">
+                    {testimonial.image_url ? (
+                      <img src={testimonial.image_url} alt={testimonial.name} className="w-12 h-12 object-cover rounded-full" />
+                    ) : (
+                      <div className="w-12 h-12 bg-accent/20 rounded-full flex items-center justify-center text-accent font-semibold">
+                        {testimonial.name.split(' ').map((n: string) => n[0]).join('').slice(0, 2).toUpperCase()}
+                      </div>
+                    )}
+                    <h3 className="text-lg font-semibold">{testimonial.name}</h3>
+                  </div>
                   <div className="flex gap-2">
                     <Button
                       size="sm"

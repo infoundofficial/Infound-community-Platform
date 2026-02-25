@@ -169,19 +169,30 @@ export default function Home() {
           <div className="grid md:grid-cols-3 gap-8">
             {events.length > 0 ? (
               events.map((event) => (
-                <Card key={event.id} className="p-8 hover:shadow-lg transition-shadow border-l-4 border-accent">
-                  <div className="flex items-start justify-between mb-4">
-                    <div>
-                      <p className="text-sm text-accent font-semibold">{new Date(event.date).toLocaleDateString()}</p>
-                      <h3 className="text-2xl font-bold mt-2">{event.title}</h3>
+                <Card key={event.id} className="overflow-hidden hover:shadow-lg transition-shadow border-l-4 border-accent">
+                  {event.image_url && (
+                    <div className="w-full h-48 overflow-hidden">
+                      <img 
+                        src={event.image_url} 
+                        alt={event.title} 
+                        className="w-full h-full object-cover"
+                      />
                     </div>
+                  )}
+                  <div className="p-8">
+                    <div className="flex items-start justify-between mb-4">
+                      <div>
+                        <p className="text-sm text-accent font-semibold">{new Date(event.date).toLocaleDateString()}</p>
+                        <h3 className="text-2xl font-bold mt-2">{event.title}</h3>
+                      </div>
+                    </div>
+                    <p className="text-foreground/60 mb-4">{event.description}</p>
+                    <div className="flex items-center gap-2 text-sm text-foreground/50 mb-6">
+                      <Briefcase className="w-4 h-4" />
+                      <span>{event.location}</span>
+                    </div>
+                    <Button className="w-full rounded-lg">Register Now</Button>
                   </div>
-                  <p className="text-foreground/60 mb-4">{event.description}</p>
-                  <div className="flex items-center gap-2 text-sm text-foreground/50 mb-6">
-                    <Briefcase className="w-4 h-4" />
-                    <span>{event.location}</span>
-                  </div>
-                  <Button className="w-full rounded-lg">Register Now</Button>
                 </Card>
               ))
             ) : (
@@ -264,9 +275,17 @@ export default function Home() {
                   </div>
                   <p className="text-foreground/60 mb-6 leading-relaxed">"{testimonial.content}"</p>
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 bg-accent/20 rounded-full flex items-center justify-center text-accent font-semibold">
-                      {testimonial.name.split(' ').map((n: string) => n[0]).join('').slice(0, 2).toUpperCase()}
-                    </div>
+                    {testimonial.image_url ? (
+                      <img 
+                        src={testimonial.image_url} 
+                        alt={testimonial.name} 
+                        className="w-10 h-10 object-cover rounded-full"
+                      />
+                    ) : (
+                      <div className="w-10 h-10 bg-accent/20 rounded-full flex items-center justify-center text-accent font-semibold">
+                        {testimonial.name.split(' ').map((n: string) => n[0]).join('').slice(0, 2).toUpperCase()}
+                      </div>
+                    )}
                     <div>
                       <p className="font-semibold text-sm">{testimonial.name}</p>
                       <p className="text-xs text-foreground/50">{testimonial.role}</p>

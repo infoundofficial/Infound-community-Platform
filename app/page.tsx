@@ -56,7 +56,7 @@ export default function Home() {
   return (
     <main className="w-full">
       {/* Navigation */}
-      <nav className="fixed top-0 w-full bg-background/80 backdrop-blur-md border-b border-border z-50">
+      <nav className="fixed top-0 w-full bg-[#070046] border-b border-border z-50">
         <div className="max-w-7xl mx-auto px-4 md:px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Image 
@@ -66,16 +66,16 @@ export default function Home() {
               height={40}
               className="w-10 h-10"
             />
-            <span className="font-semibold text-lg hidden sm:inline">InFound</span>
+            <span className="font-semibold text-lg hidden sm:inline text-accent">InFound</span>
           </div>
           <div className="hidden md:flex items-center gap-8">
-            <Link href="#features" className="text-sm text-foreground/70 hover:text-foreground transition">
+            <Link href="#features" className="text-sm text-accent hover:text-accent/80 transition">
               Features
             </Link>
-            <Link href="#how-it-works" className="text-sm text-foreground/70 hover:text-foreground transition">
+            <Link href="#how-it-works" className="text-sm text-accent hover:text-accent/80 transition">
               How it Works
             </Link>
-            <Link href="#community" className="text-sm text-foreground/70 hover:text-foreground transition">
+            <Link href="#community" className="text-sm text-accent hover:text-accent/80 transition">
               Community
             </Link>
           </div>
@@ -89,11 +89,11 @@ export default function Home() {
                 {theme === 'dark' ? (
                   <Sun className="w-5 h-5 text-accent" />
                 ) : (
-                  <Moon className="w-5 h-5 text-primary" />
+                  <Moon className="w-5 h-5 text-accent" />
                 )}
               </button>
             )}
-            <Button className="rounded-full">Get Started</Button>
+            <Button className="rounded-full bg-accent text-primary hover:bg-accent/90">Get Started</Button>
           </div>
         </div>
       </nav>

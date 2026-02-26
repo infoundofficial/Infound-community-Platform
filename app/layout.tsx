@@ -10,23 +10,11 @@ const _geistMono = Geist_Mono({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: 'InFound Community - Founder-Led Investing Platform',
   description: 'InFound community—the founder-led platform designed to bridge the gap between early-stage startups and seasoned investors.',
-  generator: 'v0.app',
+  generator: 'drupto',
   icons: {
-    icon: [
-      {
-        url: '/icon-light-32x32.png',
-        media: '(prefers-color-scheme: light)',
-      },
-      {
-        url: '/icon-dark-32x32.png',
-        media: '(prefers-color-scheme: dark)',
-      },
-      {
-        url: '/icon.svg',
-        type: 'image/svg+xml',
-      },
-    ],
-    apple: '/apple-icon.png',
+    icon: '/logo.png',            // use public/logo.png as the favicon
+    shortcut: '/logo.png',        // legacy shortcut icon
+    apple: '/logo.png',           // apple touch icon
   },
 }
 

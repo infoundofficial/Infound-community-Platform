@@ -1,0 +1,9 @@
+[build]
+  base = ""
+  publish = ".next"
+  command = "npm run build"
+
+[build.environment]
+  NODE_VERSION = "18"
+  # enable pnpm via corepack so Netlify will detect pnpm
+  NETLIFY_PREBUILD_COMMAND = "corepack enable && corepack prepare pnpm@latest --activate"
